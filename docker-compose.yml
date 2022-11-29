@@ -37,7 +37,6 @@ services:
       DB_PASSWORD: ${DB_PASSWORD:-secret}
       DB_NAME: ${DB_NAME:-postgres}
       DB_PORT: ${DB_PORT:-5432}
-      # TODO: SA を発行したら入れる
       ENV: local
     networks:
       - api-network
