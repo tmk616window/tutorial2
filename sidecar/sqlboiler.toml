@@ -1,0 +1,38 @@
+output              = "infra/boiler"
+pkgname             = "boiler"
+wipe                = true
+add-global-variants = true
+add-panic-variants  = true
+no-tests            = true
+
+[psql]
+  dbname  = "postgres"
+  host    = "db"
+  port    = "5432"
+  user    = "hasura"
+  pass    = "secret"
+  sslmode = "disable"
+  schema  = "public"
+
+# NOTE:https://github.com/volatiletech/sqlboiler#types
+[[types]]
+  [types.match]
+    type = "types.Decimal"
+    nullable = false
+
+  [types.replace]
+    type = "decimal.Decimal"
+
+  [types.imports]
+    third_party = ['"github.com/shopspring/decimal"']
+
+[[types]]
+  [types.match]
+    type = "types.NullDecimal"
+    nullable = true
+
+  [types.replace]
+    type = "decimal.NullDecimal"
+
+  [types.imports]
+    third_party = ['"github.com/shopspring/decimal"']

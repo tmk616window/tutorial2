@@ -32,6 +32,7 @@ services:
         source: go_modules_api
         target: /go/pkg/mod
     environment:
+      PORT: "8888"
       DB_HOST: ${DB_HOST:-host.docker.internal}
       DB_USER: ${DB_USER:-hasura}
       DB_PASSWORD: ${DB_PASSWORD:-secret}
