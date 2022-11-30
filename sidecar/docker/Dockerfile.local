@@ -13,6 +13,10 @@ RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh 
 RUN go install github.com/volatiletech/sqlboiler/v4@v4.13.0 && \
   go install github.com/volatiletech/sqlboiler/v4/drivers/sqlboiler-psql@v4.13.0
 
+RUN go install github.com/99designs/gqlgen@v0.17.20
+
+
+
 
 # air -c [tomlファイル名] // 設定ファイルを指定してair実行(WORKDIRに.air.tomlを配置しておくこと)
 CMD ["air", "-c", ".air.toml"]
