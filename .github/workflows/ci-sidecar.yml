@@ -1,6 +1,16 @@
 name: Apply hasura metadata
 description: Hasura を立ち上げてマイグレーションとメタデータを適用する Action
 
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    paths:
+      - ".github/workflows/ci-sidecar.yaml"
+      - "sidecar/**"
+  workflow_dispatch:
+
 runs:
   using: composite
   steps:
