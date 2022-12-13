@@ -46,7 +46,7 @@ services:
       DB_NAME: ${DB_NAME:-postgres}
       DB_PORT: ${DB_PORT:-5432}
       ENV: local
-      GOOGLE_APPLICATION_CREDENTIALS: /go/src/sidecar/secrets/tutorial_sa_terraform.json
+      # GOOGLE_APPLICATION_CREDENTIALS: /go/src/sidecar/secrets/tutorial_sa_terraform.json
     networks:
       - api-network
   hasura:
