@@ -21,6 +21,10 @@ jobs:
         shell: bash
         run: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | VERSION=v2.15.0 bash
 
+      - name: Create network
+        shell: bash
+        run: make bridge
+
       - name: Compose up
         shell: bash
         run: |
