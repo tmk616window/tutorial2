@@ -11,27 +11,28 @@ on:
       - "sidecar/**"
   workflow_dispatch:
 
-runs:
-  using: composite
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+jobs:
+  runs:
+    using: composite
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    - name: Install Hasura CLI
-      shell: bash
-      run: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | VERSION=v2.15.2 bash
+      - name: Install Hasura CLI
+        shell: bash
+        run: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | VERSION=v2.15.2 bash
 
-    - name: Compose up
-      shell: bash
-      run: |
-        OPTS="--quiet-pull" make up
+      - name: Compose up
+        shell: bash
+        run: |
+          OPTS="--quiet-pull" make up
 
-    - name: Wait for hasura up
-      shell: bash
-      run: |
-        echo 'waiting for hasura server up...'
-        until curl -s http://127.0.0.1:8080/healthz; do sleep 0.5; done
+      - name: Wait for hasura up
+        shell: bash
+        run: |
+          echo 'waiting for hasura server up...'
+          until curl -s http://127.0.0.1:8080/healthz; do sleep 0.5; done
 
-    - name: Apply metadata & migrations
-      shell: bash
-      run: hasura --project hasura deploy --admin-secret secret --skip-update-check
+      - name: Apply metadata & migrations
+        shell: bash
+        run: hasura --project hasura deploy --admin-secret secret --skip-update-check
