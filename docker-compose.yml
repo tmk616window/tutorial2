@@ -10,7 +10,7 @@ services:
         - pg_isready -U postgres -d postgres
       interval: 10s
       timeout: 5s
-      retries: 20                 
+      retries: 20
     volumes:
       - type: volume
         source: db_data
@@ -50,7 +50,7 @@ services:
     networks:
       - api-network
   hasura:
-    image: hasura/graphql-engine:v2.15.0.cli-migrations-v3
+    image: hasura/graphql-engine:v2.15.2.cli-migrations-v3
     ports:
       - "${HASURA_PORT:-8080}:8080"
     depends_on:
