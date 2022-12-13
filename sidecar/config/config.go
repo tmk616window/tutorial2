@@ -6,6 +6,7 @@ type Cfg struct {
     Env      string `required:"true" envconfig:"ENV"`
 	PORT     string `required:"true" envconfig:"PORT"`
 	Database
+	GCP
 }
 
 func NewConfig() (Cfg, error) {

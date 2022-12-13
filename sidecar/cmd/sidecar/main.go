@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"context"
 	"log"
 	"net/http"
 	"os"
@@ -10,6 +10,7 @@ import (
 	"sidecar/graph/generated"
 	"sidecar/infra/db"
 
+	"cloud.google.com/go/storage"
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 )
@@ -19,10 +20,15 @@ const defaultPort = "8888"
 func main(){
 	cfg, err := config.NewConfig()
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 
 	if err := db.InitDB(db.URI(cfg.Database), cfg.IsLocal()); err != nil {
+		panic(err)
+	}
+
+	cfg.GCP.GCSClient, err = storage.NewClient(context.Background())
+	if err != nil {
 		panic(err)
 	}
 
