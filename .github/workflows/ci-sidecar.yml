@@ -19,7 +19,7 @@ jobs:
 
       - name: Install Hasura CLI
         shell: bash
-        run: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | VERSION=v2.15.2 bash
+        run: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | VERSION=v2.15.0 bash
 
       - name: Compose up
         shell: bash
