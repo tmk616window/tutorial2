@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -31,6 +32,22 @@ func main(){
 	if err != nil {
 		panic(err)
 	}
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
+	fmt.Println(cfg.GCP.GCSClient)
 
 	port := os.Getenv("PORT")
 	if port == "" {
