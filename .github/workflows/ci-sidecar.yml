@@ -1,0 +1,41 @@
+name: Apply hasura metadata
+
+on:
+  push:
+  pull_request:
+    paths:
+      - ".github/workflows/ci-sidecar.yaml"
+      - "sidecar/**"
+  workflow_dispatch:
+
+jobs:
+  setup:
+    name: Setup
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install Hasura CLI
+        shell: bash
+        run: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | VERSION=v2.15.2 bash
+
+      - name: Create network
+        shell: bash
+        run: make bridge
+
+      - name: Compose up
+        shell: bash
+        run: |
+          OPTS="--quiet-pull" make up
+
+      - name: Wait for hasura up
+        shell: bash
+        run: |
+          echo 'waiting for hasura server up...'
+          until curl -s http://127.0.0.1:8080/healthz; do sleep 0.5; done
+
+      - name: Apply metadata & migrations
+        shell: bash
+        run: hasura --project hasura deploy --admin-secret secret --skip-update-check

@@ -30,4 +30,4 @@ console: ## hasura console
 
 .PHONY: bridge
 bridge: ## docker network を生成する
-	@if [ -z "$$(docker network ls -q -f name='^api-network$\')" ]; then docker network create cosmos-portal-api-network; fi
+	@if [ -z "$$(docker network ls -q -f name='^api-network$\')" ]; then docker network create api-network; fi

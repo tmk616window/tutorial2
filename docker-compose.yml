@@ -4,6 +4,13 @@ services:
     image: postgres:14
     ports:
       - "${DB_PORT:-5432}:5432"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U postgres -d postgres
+      interval: 10s
+      timeout: 5s
+      retries: 20
     volumes:
       - type: volume
         source: db_data
@@ -39,10 +46,11 @@ services:
       DB_NAME: ${DB_NAME:-postgres}
       DB_PORT: ${DB_PORT:-5432}
       ENV: local
+      GOOGLE_APPLICATION_CREDENTIALS: /go/src/sidecar/secrets/tutorial_sa_terraform.json
     networks:
       - api-network
   hasura:
-    image: hasura/graphql-engine:v2.15.0.cli-migrations-v3
+    image: hasura/graphql-engine:v2.15.2.cli-migrations-v3
     ports:
       - "${HASURA_PORT:-8080}:8080"
     depends_on:
@@ -55,10 +63,9 @@ services:
       HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
       HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      # HASURA_REMOTE_SCHEMA_ENDPOINT: http://sidecar:8888/graphql
+      HASURA_REMOTE_SCHEMA_ENDPOINT: http://sidecar:8888/graphql
       HASURA_GRAPHQL_ENABLE_REMOTE_SCHEMA_PERMISSIONS: "true"
       HASURA_GRAPHQL_ADMIN_SECRET: secret
-      HASURA_GRAPHQL_JWT_SECRET: '{"type": "RS512", "key": "-----BEGIN CERTIFICATE-----\nMIIDGTCCAgGgAwIBAgIJDRgDVKgyv43+MA0GCSqGSIb3DQEBCwUAMCoxKDAmBgNV\nBAMTH2Nvc21vcy1kZXZlbG9wbWVudC5qcC5hdXRoMC5jb20wHhcNMjEwNzI2MDEz\nODIyWhcNMzUwNDA0MDEzODIyWjAqMSgwJgYDVQQDEx9jb3Ntb3MtZGV2ZWxvcG1l\nbnQuanAuYXV0aDAuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA\n3JQt/ElUNFmknSauGzQGgThY9jMAYMOoq6o85nl/syCtNfHaCV12AeB5dpDlLXJm\nfm25HJ9NSsBzZyNPOFP8v17O5PBhITcvYLw4Zdf/QOaS6zMGOp3D/P8hcDm0YaUT\nQ0hvxHxYuV8FKf8WWDbNPxwC05CkoPuUc81XRzkcGvZMJuWwaPnFfaFjH/BjnplM\nHD48yNTS9pI0vExIn0lJZvGLQ8mJ48sGsJYckGfzrGQ1k2HTSSVfJ6ZPe+vm4lfL\nB4UfP9IImiS6MWd1XuM13Ns/4k2npG3PPV5M9Bx9961wF1TrFnOddO1yZaXfaK2w\nFn+Xyx5Dga57D3wSfXTNNQIDAQABo0IwQDAPBgNVHRMBAf8EBTADAQH/MB0GA1Ud\nDgQWBBSREeM2dU0ECF3zMFs9q+Qqi2mSKTAOBgNVHQ8BAf8EBAMCAoQwDQYJKoZI\nhvcNAQELBQADggEBAJR9DPKg+dEFUxKiLbY2aqETMyMxKp6IlyVF+WHp5httsngn\nkQGK5O8I0GsNeHJq/wroWRL9jVRW/T1akGGybP3I/WDtdSgbPY+L3ncltQdalFPB\nAJYO/GtFuhsQ7TRaf8YIw7RVTJXFYn0xkVpjhD+GjCUILJyq32qUGDpevdX8MYNo\nAX2h57x+fPvA05dRlTK25ZYili+iwfbyxmze04jJivhg4r4c/FFa1EvCkqKuYS2V\nC3uxp21yZmts9dKq3RUwcnWFN6KyRm6CtBS4VFXLBC69F+dC6ajRMeSSinqIwzFe\nx9gklJbZPC2EnZofIIAdpfBPxoXgGbEwRTWJawY=\n-----END CERTIFICATE-----","claims_namespace": "https://cosmos.api/hasura"}'
     networks:
       - api-network
 volumes:
