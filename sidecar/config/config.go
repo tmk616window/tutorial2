@@ -9,10 +9,13 @@ type Cfg struct {
 	GCP
 }
 
-func NewConfig() (Cfg, error) {
-	c := Cfg{}
-	err := envconfig.Process("", &c)
-	return c, err
+func NewConfig() (*Cfg, error) {
+	c := &Cfg{}
+	if err := envconfig.Process("", c); err != nil {
+		return nil, err
+	}
+	
+	return c, nil
 }
 
 func (c *Cfg) IsLocal() bool {

@@ -1,19 +1,11 @@
 package main
 
 import (
-	"context"
-	"fmt"
-	"log"
-	"net/http"
 	"os"
 	"sidecar/config"
-	"sidecar/graph"
-	"sidecar/graph/generated"
 	"sidecar/infra/db"
-
-	"cloud.google.com/go/storage"
-	"github.com/99designs/gqlgen/graphql/handler"
-	"github.com/99designs/gqlgen/graphql/playground"
+	"sidecar/infra/gcs"
+	"sidecar/router"
 )
 
 const defaultPort = "8888"
@@ -24,43 +16,25 @@ func main(){
 		panic(err)
 	}
 
-	if err := db.InitDB(db.URI(cfg.Database), cfg.IsLocal()); err != nil {
-		panic(err)
-	}
-
-	cfg.GCP.GCSClient, err = storage.NewClient(context.Background())
+	gcsClient, err := gcs.NewClient()
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
-	fmt.Println(cfg.GCP.GCSClient)
+
+	if err := db.InitDB(db.URI(cfg.Database), cfg.IsLocal()); err != nil {
+		panic(err)
+	}
 
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
 	}
 
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
-
-	http.Handle("/", playground.Handler("GraphQL playground", "/graphql"))
-	http.Handle("/graphql", srv)
-
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
-
+	if err := router.ListenAndServe(
+		cfg,
+		gcsClient,
+	); err != nil {
+		panic(err)
+	}
 }
 

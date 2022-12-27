@@ -6,6 +6,7 @@ require (
 	cloud.google.com/go/storage v1.10.0
 	github.com/99designs/gqlgen v0.17.20
 	github.com/friendsofgo/errors v0.9.2
+	github.com/go-chi/chi v1.5.4
 	github.com/jackc/pgx/v4 v4.17.2
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/vektah/gqlparser/v2 v2.5.1
