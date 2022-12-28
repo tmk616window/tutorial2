@@ -77,9 +77,24 @@ services:
       GOOGLE_APPLICATION_CREDENTIALS: /go/src/sidecar/secrets/tutorial_sa_terraform.json
     networks:
       - api-network
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: password
+    command: server --console-address ":9001" /data
+    volumes:
+      - minio_data:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    networks:
+      - api-network
 volumes:
   db_data:
   go_modules_api:
+  minio_data:
 networks:
   api-network:
     external: true
