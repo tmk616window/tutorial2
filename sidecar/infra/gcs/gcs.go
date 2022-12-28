@@ -11,7 +11,7 @@ type client struct {
 }
 
 type ClientInterface interface {
-	
+
 }
 
 func NewClient () (client, error) {
@@ -22,4 +22,3 @@ func NewClient () (client, error) {
 
 	return client{c}, nil
 }
-

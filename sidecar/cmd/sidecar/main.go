@@ -5,6 +5,8 @@ import (
 	"sidecar/config"
 	"sidecar/infra/db"
 	"sidecar/infra/gcs"
+	"sidecar/infra/minio"
+	"sidecar/infra/storage"
 	"sidecar/router"
 )
 
@@ -16,14 +18,21 @@ func main(){
 		panic(err)
 	}
 
-	gcsClient, err := gcs.NewClient()
+	var storage storage.StorageCaller
+	if cfg.IsLocal() {
+		storage.StorageInterface, err = minio.NewClient()		
+	} else {
+		storage.StorageInterface, err = gcs.NewClient()
+	}
 	if err != nil {
 		panic(err)
 	}
 
-	if err := db.InitDB(db.URI(cfg.Database), cfg.IsLocal()); err != nil {
+	db, err := db.InitDB(db.URI(cfg.Database), cfg.IsLocal())
+	if err != nil {
 		panic(err)
 	}
+	defer db.Close()
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -32,9 +41,8 @@ func main(){
 
 	if err := router.ListenAndServe(
 		cfg,
-		gcsClient,
+		storage,
 	); err != nil {
 		panic(err)
 	}
 }
-

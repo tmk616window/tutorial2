@@ -2,7 +2,7 @@ package graph
 
 import (
 	"sidecar/config"
-	"sidecar/infra/gcs"
+	"sidecar/infra/storage"
 )
 
 // This file will not be regenerated automatically.
@@ -11,15 +11,15 @@ import (
 
 type Resolver struct{
 	cfg *config.Cfg
-	gCSService gcs.ClientInterface
+	storage storage.StorageCaller
 }
 
 func NewResolver(
 	cfg *config.Cfg,
-	gCSService gcs.ClientInterface,
+	storage storage.StorageCaller,
 ) *Resolver {
 	return &Resolver{
 		cfg: cfg,
-		gCSService: gCSService,
+		storage: storage,
 	}	
 }
