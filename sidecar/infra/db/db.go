@@ -10,15 +10,15 @@ import (
 	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
-func InitDB(dbUrl string, isLocal bool) error {
+func InitDB(dbUrl string, isLocal bool) (*sql.DB, error) {
 	db, err := sql.Open("pgx", dbUrl)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// db health check
 	if err := db.Ping(); err != nil {
-		return err
+		return nil, err
 	}
 
 	db.SetMaxIdleConns(10)
@@ -30,7 +30,7 @@ func InitDB(dbUrl string, isLocal bool) error {
 	// DB をグローバルで呼べるように設定
 	boil.SetDB(db) // nolint
 
-	return nil
+	return db, nil
 }
 
 func URI(db config.Database) string {

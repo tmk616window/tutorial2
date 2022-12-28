@@ -28,9 +28,11 @@ func main(){
 		panic(err)
 	}
 
-	if err := db.InitDB(db.URI(cfg.Database), cfg.IsLocal()); err != nil {
+	db, err := db.InitDB(db.URI(cfg.Database), cfg.IsLocal())
+	if err != nil {
 		panic(err)
 	}
+	defer db.Close()
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -44,4 +46,3 @@ func main(){
 		panic(err)
 	}
 }
-
