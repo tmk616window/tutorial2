@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"sidecar/config"
-	"sidecar/infra/gcs"
+	"sidecar/infra/storage"
 	"sidecar/router/api"
 
 	"github.com/go-chi/chi"
@@ -13,12 +13,12 @@ import (
 
 func ListenAndServe(
 	cfg *config.Cfg,
-	gCSService gcs.ClientInterface,
+	storage storage.StorageCaller,
 ) error {
 	router := chi.NewRouter()
 
 	router.Get("/healthcheck", api.GetHealthCheck())
-	router.Post("/graphql", api.PostGraphQL(cfg, gCSService))
+	router.Post("/graphql", api.PostGraphQL(cfg, storage))
 	// ルーティング
 	if cfg.IsLocal() {
 		router.Get("/playground", api.GetPlayground("/playground"))

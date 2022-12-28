@@ -40,7 +40,7 @@ func main(){
 
 	if err := router.ListenAndServe(
 		cfg,
-		gcsClient,
+		storage,
 	); err != nil {
 		panic(err)
 	}
