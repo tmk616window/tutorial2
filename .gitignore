@@ -5,3 +5,4 @@ secrets
 .env*
 !.env.sample
 docker-compose.*.yml
+.DS_Store
