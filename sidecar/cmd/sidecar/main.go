@@ -41,6 +41,7 @@ func main(){
 
 	if err := router.ListenAndServe(
 		cfg,
+		db,
 		storage,
 	); err != nil {
 		panic(err)

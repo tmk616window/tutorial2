@@ -1,6 +1,7 @@
 package api
 
 import (
+	"database/sql"
 	"net/http"
 
 	"sidecar/config"
@@ -13,11 +14,13 @@ import (
 
 func PostGraphQL(
 	cfg *config.Cfg,
+	db *sql.DB,
 	storage storage.StorageCaller,
 ) http.HandlerFunc {
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(
 		generated.Config{Resolvers: graph.NewResolver(
 			cfg,
+			db,
 			storage,
 		)},
 	))

@@ -7,7 +7,7 @@ services:
     healthcheck:
       test:
         - CMD-SHELL
-        - pg_isready -U postgres -d postgres
+        - pg_isready -U hasura -d postgres
       interval: 10s
       timeout: 5s
       retries: 20

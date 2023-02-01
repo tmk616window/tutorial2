@@ -1,6 +1,7 @@
 package router
 
 import (
+	"database/sql"
 	"net/http"
 	"time"
 
@@ -13,12 +14,13 @@ import (
 
 func ListenAndServe(
 	cfg *config.Cfg,
+	db *sql.DB,
 	storage storage.StorageCaller,
 ) error {
 	router := chi.NewRouter()
 
 	router.Get("/healthcheck", api.GetHealthCheck())
-	router.Post("/graphql", api.PostGraphQL(cfg, storage))
+	router.Post("/graphql", api.PostGraphQL(cfg, db,storage))
 	// ルーティング
 	if cfg.IsLocal() {
 		router.Get("/playground", api.GetPlayground("/playground"))
