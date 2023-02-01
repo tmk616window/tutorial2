@@ -13,7 +13,7 @@ import (
 
 // GetChatUsers is the resolver for the getChatUsers field.
 func (r *queryResolver) GetChatUsers(ctx context.Context, input int) ([]*model.ChatUsersResponse, error) {
-	rows, err := r.db.Query(`
+	query := fmt.Sprintf(`
 			select
 				u.id,
 				u.name,
@@ -41,7 +41,8 @@ func (r *queryResolver) GetChatUsers(ctx context.Context, input int) ([]*model.C
 			) latest_messages
 				on
 				f.room_id = latest_messages.room_id
-			and f.user_id = 1;`)
+			and f.user_id = %v`, input)
+	rows, err := r.db.Query(query)
 	if err != nil {
 		log.Fatalf("getRows db.Query error err:%v", err)
 		return nil, err
@@ -53,7 +54,7 @@ func (r *queryResolver) GetChatUsers(ctx context.Context, input int) ([]*model.C
 	for rows.Next() {
 		u := model.ChatUsersResponse{}
 		user := model.User{}
-		if err := rows.Scan(&u.User.ID, &user.Name, &u.LatestMessage); err != nil {
+		if err := rows.Scan(&user.ID, &user.Name, &u.LatestMessage); err != nil {
 			log.Fatalf("getRows rows.Scan error err:%v", err)
 		}
 		u.User = &user
