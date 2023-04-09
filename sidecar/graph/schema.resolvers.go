@@ -12,11 +12,6 @@ import (
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
-// GetChatUsers is the resolver for the getChatUsers field.
-func (r *queryResolver) GetChatUsers(ctx context.Context, input int) ([]*model.ChatUsersResponse, error) {
-	return nil, nil
-}
-
 // GetDirectMessages is the resolver for the getDirectMessages field.
 func (r *queryResolver) GetDirectMessages(ctx context.Context, input int) ([]*model.DirectMessagesResponse, error) {
 	var DMs []*model.DirectMessagesResponse
@@ -31,11 +26,11 @@ func (r *queryResolver) GetDirectMessages(ctx context.Context, input int) ([]*mo
 
 	for _, m := range messages {
 		dm := &model.DirectMessagesResponse{
-			Element:  m.Text.String,
-			RoomID:   m.RoomID,
+			Element: m.Text.String,
+			RoomID:  m.RoomID,
 			User: &model.User{
-				ID: m.R.User.ID,
-				Name: m.R.User.Name,
+				ID:    m.R.User.ID,
+				Name:  m.R.User.Name,
 				Image: &m.R.User.Image.String,
 			},
 		}

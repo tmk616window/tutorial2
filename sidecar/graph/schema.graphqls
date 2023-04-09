@@ -2,11 +2,6 @@
 #
 # https://gqlgen.com/getting-started/
 
-type chatUsersResponse {
-  messageUser: String!
-  latestMessage: String!
-}
-
 type user {
   id: Int!
   name: String!
@@ -20,6 +15,5 @@ type directMessagesResponse {
 }
 
 type Query {
-  getChatUsers(input: Int!): [chatUsersResponse!]!
   getDirectMessages(input: Int!): [directMessagesResponse!]!
 }

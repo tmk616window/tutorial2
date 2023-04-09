@@ -2,11 +2,6 @@
 
 package model
 
-type ChatUsersResponse struct {
-	MessageUser   string `json:"messageUser"`
-	LatestMessage string `json:"latestMessage"`
-}
-
 type DirectMessagesResponse struct {
 	Element string `json:"element"`
 	RoomID  int    `json:"roomID"`
