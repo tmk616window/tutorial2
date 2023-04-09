@@ -4,7 +4,13 @@
 package boiler
 
 var TableNames = struct {
-	Users string
+	DirectMessages string
+	Relationships  string
+	Rooms          string
+	Users          string
 }{
-	Users: "users",
+	DirectMessages: "direct_messages",
+	Relationships:  "relationships",
+	Rooms:          "rooms",
+	Users:          "users",
 }

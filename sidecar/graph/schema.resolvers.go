@@ -5,67 +5,44 @@ package graph
 
 import (
 	"context"
-	"fmt"
-	"log"
 	"sidecar/graph/generated"
 	"sidecar/graph/model"
+	"sidecar/infra/boiler"
+
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
 // GetChatUsers is the resolver for the getChatUsers field.
 func (r *queryResolver) GetChatUsers(ctx context.Context, input int) ([]*model.ChatUsersResponse, error) {
-	query := fmt.Sprintf(`
-			select
-				u.id,
-				u.name,
-				latest_messages.message
-			from
-			friends f
-			inner join users u on
-				u.id = f.friend_id
-			inner join
-			(
-			select
-			*
-			from
-			direct_comments
-			where
-			not exists (
-				select
-				1
-				from
-				direct_comments sub
-				where
-				direct_comments.room_id = sub.room_id
-				and direct_comments.created_at < sub.created_at
-			)
-			) latest_messages
-				on
-				f.room_id = latest_messages.room_id
-			and f.user_id = %v`, input)
-	rows, err := r.db.Query(query)
+	return nil, nil
+}
+
+// GetDirectMessages is the resolver for the getDirectMessages field.
+func (r *queryResolver) GetDirectMessages(ctx context.Context, input int) ([]*model.DirectMessagesResponse, error) {
+	var DMs []*model.DirectMessagesResponse
+
+	messages, err := boiler.DirectMessages(
+		qm.Load(boiler.DirectMessageRels.User),
+		qm.Where("room_id = ?", input),
+	).All(ctx, r.db)
 	if err != nil {
-		log.Fatalf("getRows db.Query error err:%v", err)
 		return nil, err
 	}
-	defer rows.Close()
 
-	var userChats []*model.ChatUsersResponse
-
-	for rows.Next() {
-		u := model.ChatUsersResponse{}
-		user := model.User{}
-		if err := rows.Scan(&user.ID, &user.Name, &u.LatestMessage); err != nil {
-			log.Fatalf("getRows rows.Scan error err:%v", err)
+	for _, m := range messages {
+		dm := &model.DirectMessagesResponse{
+			Element:  m.Text.String,
+			RoomID:   m.RoomID,
+			User: &model.User{
+				ID: m.R.User.ID,
+				Name: m.R.User.Name,
+				Image: &m.R.User.Image.String,
+			},
 		}
-		u.User = &user
-		fmt.Println(u.User.Name)
-		userChats = append(userChats, &model.ChatUsersResponse{
-			User:          &user,
-			LatestMessage: u.LatestMessage,
-		})
+		DMs = append(DMs, dm)
 	}
 
-	return userChats, nil
+	return DMs, nil
 }
 
 // Query returns generated.QueryResolver implementation.

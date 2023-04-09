@@ -2,12 +2,19 @@
 
 package model
 
-type User struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+type ChatUsersResponse struct {
+	MessageUser   string `json:"messageUser"`
+	LatestMessage string `json:"latestMessage"`
 }
 
-type ChatUsersResponse struct {
-	User          *User  `json:"user"`
-	LatestMessage string `json:"latestMessage"`
+type DirectMessagesResponse struct {
+	Element string `json:"element"`
+	RoomID  int    `json:"roomID"`
+	User    *User  `json:"user"`
+}
+
+type User struct {
+	ID    int     `json:"id"`
+	Name  string  `json:"name"`
+	Image *string `json:"image"`
 }

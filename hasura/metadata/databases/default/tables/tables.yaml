@@ -1,4 +1,4 @@
-- "!include public_direct_comments.yaml"
-- "!include public_friends.yaml"
+- "!include public_direct_messages.yaml"
+- "!include public_relationships.yaml"
 - "!include public_rooms.yaml"
 - "!include public_users.yaml"

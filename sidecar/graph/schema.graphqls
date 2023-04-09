@@ -2,16 +2,24 @@
 #
 # https://gqlgen.com/getting-started/
 
-type User {
-  id: Int!
-  name: String!
+type chatUsersResponse {
+  messageUser: String!
+  latestMessage: String!
 }
 
-type chatUsersResponse {
-  user: User!
-  latestMessage: String!
+type user {
+  id: Int!
+  name: String!
+  image: String
+}
+
+type directMessagesResponse {
+  element: String!
+  roomID: Int!
+  user: user
 }
 
 type Query {
   getChatUsers(input: Int!): [chatUsersResponse!]!
+  getDirectMessages(input: Int!): [directMessagesResponse!]!
 }
