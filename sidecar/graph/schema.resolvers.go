@@ -12,6 +12,11 @@ import (
 	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
+// CreateDirectMessage is the resolver for the createDirectMessage field.
+func (r *mutationResolver) CreateDirectMessage(ctx context.Context, input model.CreateDirectMessage) (*model.CreateDirectMessageResult, error) {
+	return nil, nil
+}
+
 // GetDirectMessages is the resolver for the getDirectMessages field.
 func (r *queryResolver) GetDirectMessages(ctx context.Context, input int) ([]*model.DirectMessagesResponse, error) {
 	var DMs []*model.DirectMessagesResponse
@@ -40,7 +45,11 @@ func (r *queryResolver) GetDirectMessages(ctx context.Context, input int) ([]*mo
 	return DMs, nil
 }
 
+// Mutation returns generated.MutationResolver implementation.
+func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
+
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
+type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }

@@ -2,6 +2,10 @@
 #
 # https://gqlgen.com/getting-started/
 
+input CreateDirectMessage {
+  element: String!
+}
+
 type user {
   id: Int!
   name: String!
@@ -14,6 +18,14 @@ type directMessagesResponse {
   user: user
 }
 
+type CreateDirectMessageResult {
+  element: String!
+}
+
 type Query {
   getDirectMessages(input: Int!): [directMessagesResponse!]!
+}
+
+type Mutation {
+  createDirectMessage(input: CreateDirectMessage!): CreateDirectMessageResult!
 }

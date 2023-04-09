@@ -2,6 +2,14 @@
 
 package model
 
+type CreateDirectMessage struct {
+	Element string `json:"element"`
+}
+
+type CreateDirectMessageResult struct {
+	Element string `json:"element"`
+}
+
 type DirectMessagesResponse struct {
 	Element string `json:"element"`
 	RoomID  int    `json:"roomID"`
