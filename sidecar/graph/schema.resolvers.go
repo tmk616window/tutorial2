@@ -5,19 +5,44 @@ package graph
 
 import (
 	"context"
-	"fmt"
 	"sidecar/graph/generated"
 	"sidecar/graph/model"
+	"sidecar/infra/boiler"
+
+	"github.com/volatiletech/sqlboiler/v4/queries/qm"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+// CreateDirectMessage is the resolver for the createDirectMessage field.
+func (r *mutationResolver) CreateDirectMessage(ctx context.Context, input model.CreateDirectMessage) (*model.CreateDirectMessageResult, error) {
+	return nil, nil
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+// GetDirectMessages is the resolver for the getDirectMessages field.
+func (r *queryResolver) GetDirectMessages(ctx context.Context, input int) ([]*model.DirectMessagesResponse, error) {
+	var DMs []*model.DirectMessagesResponse
+
+	messages, err := boiler.DirectMessages(
+		qm.Load(boiler.DirectMessageRels.User),
+		qm.Where("room_id = ?", input),
+	).All(ctx, r.db)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, m := range messages {
+		dm := &model.DirectMessagesResponse{
+			Element: m.Text.String,
+			RoomID:  m.RoomID,
+			User: &model.User{
+				ID:    m.R.User.ID,
+				Name:  m.R.User.Name,
+				Image: &m.R.User.Image.String,
+			},
+		}
+		DMs = append(DMs, dm)
+	}
+
+	return DMs, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

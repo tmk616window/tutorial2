@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"database/sql"
 	"sidecar/config"
 	"sidecar/infra/storage"
 )
@@ -11,15 +12,18 @@ import (
 
 type Resolver struct{
 	cfg *config.Cfg
+	db *sql.DB
 	storage storage.StorageCaller
 }
 
 func NewResolver(
 	cfg *config.Cfg,
+	db *sql.DB,
 	storage storage.StorageCaller,
 ) *Resolver {
 	return &Resolver{
 		cfg: cfg,
+		db: db,
 		storage: storage,
 	}	
 }

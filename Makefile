@@ -31,3 +31,11 @@ console: ## hasura console
 .PHONY: bridge
 bridge: ## docker network を生成する
 	@if [ -z "$$(docker network ls -q -f name='^api-network$\')" ]; then docker network create api-network; fi
+
+.PHONY: sqlboiler
+sqlboiler: ## SQLBoiler コード生成
+	docker compose run --rm sidecar sqlboiler psql
+
+.PHONY: gqlgen
+gqlgen: ## sidecar/graph/schema に書いた GraphQL スキーマをもとに Go のコードを生成する
+	docker compose run --rm sidecar gqlgen

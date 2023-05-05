@@ -2,27 +2,30 @@
 #
 # https://gqlgen.com/getting-started/
 
-type Todo {
-  id: ID!
-  text: String!
-  done: Boolean!
-  user: User!
+input CreateDirectMessage {
+  element: String!
 }
 
-type User {
-  id: ID!
+type user {
+  id: Int!
   name: String!
+  image: String
+}
+
+type directMessagesResponse {
+  element: String!
+  roomID: Int!
+  user: user
+}
+
+type CreateDirectMessageResult {
+  element: String!
 }
 
 type Query {
-  todos: [Todo!]!
-}
-
-input NewTodo {
-  text: String!
-  userId: String!
+  getDirectMessages(input: Int!): [directMessagesResponse!]!
 }
 
 type Mutation {
-  createTodo(input: NewTodo!): Todo!
+  createDirectMessage(input: CreateDirectMessage!): CreateDirectMessageResult!
 }

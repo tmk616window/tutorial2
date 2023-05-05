@@ -3,3 +3,4 @@
     url: http://sidecar:8888/graphql
     timeout_seconds: 60
     customization: {}
+  comment: ""
