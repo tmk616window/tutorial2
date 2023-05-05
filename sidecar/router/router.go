@@ -19,7 +19,10 @@ func ListenAndServe(
 ) error {
 	router := chi.NewRouter()
 
+	go api.ListenToWsChannel()
+
 	router.Get("/healthcheck", api.GetHealthCheck())
+	router.Get("/websocket", api.WsEndpoint)
 	router.Post("/graphql", api.PostGraphQL(cfg, db,storage))
 	// ルーティング
 	if cfg.IsLocal() {
