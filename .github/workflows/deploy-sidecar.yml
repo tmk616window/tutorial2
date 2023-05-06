@@ -31,9 +31,9 @@ jobs:
           service_account: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
 
       - name: Deploy to Cloud Run
-        run: |-
+        run: |
           gcloud run deploy tnamba-tutorial-sidecar \
             --image=gcr.io/${{ secrets.PROJECT_ID }}/pro-traning-b:latest \
             --region=asia-northeast1 \
             --project=${{ secrets.PROJECT_ID }} \
-            --platform=managed \
+            --platform=managed 
