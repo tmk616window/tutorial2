@@ -33,7 +33,7 @@ jobs:
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy tnamba-tutorial-sidecar \
-            --image=gcr.io/${{ secrets.PROJECT_ID }}/pro-traning-b:latest \
+            --image=gcr.io/tech-lab-323207/pro-traning-b:latest \
             --region=asia-northeast1 \
-            --project=${{ secrets.PROJECT_ID }} \
+            --project=tech-lab-323207 \
             --platform=managed 
