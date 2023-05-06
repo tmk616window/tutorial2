@@ -27,7 +27,7 @@ jobs:
       - name: Authenticate to Google Cloud 
         uses: google-github-actions/auth@v0
         with:
-          workload_identity_provider: 'projects/${{ secrets.PROJECT_NUM }}/locations/global/workloadIdentityPools/${{ secrets.POOL_ID }}/providers/${{ secrets.PROVIDER_ID }}'
+          workload_identity_provider: 'projects/823642599271/locations/global/workloadIdentityPools/tnamba-tutorial-ga/providers/tnamba-tutorial-ga-pool-provider'
           service_account: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
 
       # - name: Deploy to Cloud Run
