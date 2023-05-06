@@ -45,7 +45,7 @@ jobs:
           context: .
           file: sidecar/docker/Dockerfile
           push: true
-          tags: asia-northeast1-docker.pkg.dev/tech-lab-323207/tnamba-tutorial-sidecar/sidecar-image:latest
+          tags: asia-northeast1-docker.pkg.dev/tech-lab-323207/tnamba-tutorial-sidecar
 
       - name: Deploy to Cloud Run
         run: |
