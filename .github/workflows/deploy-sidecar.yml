@@ -7,34 +7,10 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-deploy:
-    name: Build and Deploy to Cloud Run
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
+  caller:
+    uses: ./.github/workflows/deploy-sideca-base.yml
+    with:
+      project_id: tech-lab-323207
+      project_number: 823642599271
+      service_account_email: tnamba-tutorial-ga-sa@tech-lab-323207.iam.gserviceaccount.com
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0.2.0
-        with:
-          project_id: tech-lab-323207
-          service_account_email: tnamba-tutorial-ga-sa@tech-lab-323207.iam.gserviceaccount.com
-
-      - name: Authenticate to Google Cloud 
-        uses: google-github-actions/auth@v0
-        with:
-          workload_identity_provider: 'projects/823642599271/locations/global/workloadIdentityPools/tnamba-tutorial-ga/providers/tnamba-tutorial-ga-pool-provider'
-          service_account: tnamba-tutorial-ga-sa@tech-lab-323207.iam.gserviceaccount.com
-
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy tnamba-tutorial-sidecar \
-            --image gcr.io/tech-lab-323207/pro-traning-b:latest \
-            --region asia-northeast1 \
-            --project tech-lab-323207 \
-            --platform managed \
-            --quiet
