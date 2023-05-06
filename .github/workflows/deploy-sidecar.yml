@@ -1,0 +1,37 @@
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - deploy-ci
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy to Cloud Run
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.PROJECT_ID }}
+          service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+
+      - name: Borrow Service Account 
+      - uses: google-github-actions/auth@v0
+        with:
+          workload_identity_provider: 'projects/${{ secrets.PROJECT_NUM }}/locations/global/workloadIdentityPools/${{ secrets.POOL_ID }}/providers/${{ secret.PROVIDER_ID }}'
+          service_account: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy tnamba-tutorial-sidecar \
+            --image=gcr.io/${{ secrets.PROJECT_ID }}/pro-traning-b:latest \
+            --region=asia-northeast1 \
+            --platform=managed \
