@@ -15,14 +15,14 @@ jobs:
       contents: read
 
     steps:
-      # - name: Checkout repository
-      #   uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      # - name: Set up Cloud SDK
-      #   uses: google-github-actions/setup-gcloud@master
-      #   with:
-      #     project_id: ${{ secrets.PROJECT_ID }}
-      #     service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ secrets.PROJECT_ID }}
+          service_account_email: ${{ secrets.SERVICE_ACCOUNT_EMAIL }}
 
       # - name: Borrow Service Account 
       # - uses: google-github-actions/auth@v0
