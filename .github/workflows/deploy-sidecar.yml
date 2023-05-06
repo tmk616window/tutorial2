@@ -1,10 +1,10 @@
 name: Deploy to Cloud Run
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - deploy-ci
+    # branches:
+    #   - deploy-ci
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
