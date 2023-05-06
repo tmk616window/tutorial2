@@ -30,10 +30,10 @@ jobs:
           workload_identity_provider: 'projects/${{ secrets.PROJECT_NUM }}/locations/global/workloadIdentityPools/${{ secrets.POOL_ID }}/providers/${{ secrets.PROVIDER_ID }}'
           service_account: tnamba-tutorial-ga-sa@tech-lab-323207.iam.gserviceaccount.com
 
-      # - name: Deploy to Cloud Run
-      #   run: |
-      #     gcloud run deploy tnamba-tutorial-sidecar \
-      #       --image=gcr.io/${{ secrets.PROJECT_ID }}/pro-traning-b:latest \
-      #       --region=asia-northeast1 \
-      #       --project=${{ secrets.PROJECT_ID }} \
-      #       --platform=managed 
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy tnamba-tutorial-sidecar \
+            --image=gcr.io/${{ secrets.PROJECT_ID }}/pro-traning-b:latest \
+            --region=asia-northeast1 \
+            --project=${{ secrets.PROJECT_ID }} \
+            --platform=managed 
