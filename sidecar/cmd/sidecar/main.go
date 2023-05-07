@@ -28,7 +28,7 @@ func main(){
 		panic(err)
 	}
 
-	db, err := db.InitDB(db.URI(cfg.Database), cfg.IsLocal())
+	db, err := db.InitDB(db.URI(cfg.Database, cfg.IsLocal()), cfg.IsLocal())
 	if err != nil {
 		panic(err)
 	}
