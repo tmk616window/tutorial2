@@ -33,6 +33,9 @@ func InitDB(dbUrl string, isLocal bool) (*sql.DB, error) {
 	return db, nil
 }
 
-func URI(db config.Database) string {
-	return fmt.Sprintf("user=%s password=%s database=%s host=%s port=%s", db.DBUSER, db.PASSWORD, db.DBNAME, db.DBHOST, db.DBPORT)
+func URI(db config.Database, islocal bool) string {
+	if islocal {
+		return fmt.Sprintf("user=%s password=%s database=%s host=%s port=%s", db.DBUSER, db.PASSWORD, db.DBNAME, db.DBHOST, db.DBPORT)
+	}
+	return fmt.Sprintf("user=%s password=%s database=%s host=%s", db.DBUSER, db.PASSWORD, db.DBNAME, db.DBHOST)
 }

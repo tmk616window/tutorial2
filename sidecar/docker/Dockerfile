@@ -1,7 +1,7 @@
 # Use the official golang image to create a binary.
 # This is based on Debian and sets the GOPATH to /go.
 # https://hub.docker.com/_/golang
-FROM golang:1.19-buster as builder
+FROM --platform=linux/amd64 golang:1.19-buster as builder
 
 WORKDIR /app
 
