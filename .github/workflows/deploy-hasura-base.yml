@@ -49,18 +49,14 @@ jobs:
       - name: Configure docker to use the gcloud cli
         run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet
 
-      - name: "Build & Push docker image"
+      - name: "Pull docker image"
         run: docker pull hasura/graphql-engine:v2.15.2.cli-migrations-v3
 
       - name: "Tag docker image"
-        run: |
-          docker tag hasura/graphql-engine:v2.15.2.cli-migrations-v3 \
-            ${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/tnamba-tutorial-hasura/hasura-image:latest
+        run: docker tag hasura/graphql-engine:v2.15.2.cli-migrations-v3 ${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/tnamba-tutorial-hasura/hasura-image:latest
 
       - name: "Pish docker image"
-        run: |
-          docker push \
-            ${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/tnamba-tutorial-hasura/hasura-image:latest
+        run: docker push ${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/tnamba-tutorial-hasura/hasura-image:latest
 
       # - name: Deploy to Cloud Run
       #   run: |
