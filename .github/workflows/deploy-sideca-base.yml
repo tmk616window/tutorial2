@@ -39,22 +39,28 @@ jobs:
           workload_identity_provider: 'projects/${{ inputs.project_number }}/locations/global/workloadIdentityPools/tnamba-tutorial-ga/providers/tnamba-tutorial-ga-pool-provider'
           service_account: ${{ inputs.service_account_email }}
 
-      # - name: "Build & Push docker image"
-      #   uses: docker/build-push-action@v3
-      #   with:
-      #     context: .
-      #     file: sidecar/docker/Dockerfile
-      #     push: true
-      #     tags: asia-northeast1-docker.pkg.dev/tech-lab-323207/tnamba-tutorial-sidecar/sidecar-image:latest
+      - name: Install gcloud beta
+        run: gcloud components install beta --quiet
 
-      - name: Build a docker image
-        run: |
-          docker build \
-            -t gcr.io/tech-lab-323207/pro-traning-b:latest \
-            -f ./sidecar/docker/Dockerfile \
-            .
-      - name: Push a docker image
-        run: docker push gcr.io/tech-lab-323207/pro-traning-b:latest
+      - name: Configure docker to use the gcloud cli
+        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet
+
+      - name: "Build & Push docker image"
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: sidecar/docker/Dockerfile
+          push: true
+          tags: asia-northeast1-docker.pkg.dev/tech-lab-323207/tnamba-tutorial-sidecar/sidecar-image:latest
+
+      # - name: Build a docker image
+      #   run: |
+      #     docker build \
+      #       -t gcr.io/tech-lab-323207/pro-traning-b:latest \
+      #       -f ./sidecar/docker/Dockerfile \
+      #       .
+      # - name: Push a docker image
+      #   run: docker push gcr.io/tech-lab-323207/pro-traning-b:latest
 
       - name: Deploy to Cloud Run
         run: |
