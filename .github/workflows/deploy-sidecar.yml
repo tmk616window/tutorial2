@@ -8,7 +8,7 @@ on:
 
 jobs:
   caller:
-    uses: ./.github/workflows/deploy-sideca-base.yml
+    uses: ./.github/workflows/deploy-sidecar-base.yml
     with:
       project_id: tech-lab-323207
       project_number: 823642599271
