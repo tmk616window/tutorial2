@@ -50,11 +50,11 @@ jobs:
       - name: Build a docker image
         run: |
           docker build \
-            -t asia-northeast1-docker.pkg.dev/tech-lab-323207/tnamba-tutorial-sidecar/sidecar-image:latest \
+            -t gcr.io/tech-lab-323207/pro-traning-b:latest \
             -f ./sidecar/docker/Dockerfile \
             .
       - name: Push a docker image
-        run: docker push asia-northeast1-docker.pkg.dev/tech-lab-323207/tnamba-tutorial-sidecar/sidecar-image:latest
+        run: gcr.io/tech-lab-323207/pro-traning-b:latest
 
       - name: Deploy to Cloud Run
         run: |
