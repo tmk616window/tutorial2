@@ -39,13 +39,22 @@ jobs:
           workload_identity_provider: 'projects/${{ inputs.project_number }}/locations/global/workloadIdentityPools/tnamba-tutorial-ga/providers/tnamba-tutorial-ga-pool-provider'
           service_account: ${{ inputs.service_account_email }}
 
-      - name: "Build & Push docker image"
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: sidecar/docker/Dockerfile
-          push: true
-          tags: asia-northeast1-docker.pkg.dev/tech-lab-323207/tnamba-tutorial-sidecar/sidecar-image:latest
+      # - name: "Build & Push docker image"
+      #   uses: docker/build-push-action@v3
+      #   with:
+      #     context: .
+      #     file: sidecar/docker/Dockerfile
+      #     push: true
+      #     tags: asia-northeast1-docker.pkg.dev/tech-lab-323207/tnamba-tutorial-sidecar/sidecar-image:latest
+
+      - name: Build a docker image
+        run: |
+          docker build \
+            -t asia-northeast1-docker.pkg.dev/tech-lab-323207/tnamba-tutorial-sidecar/sidecar-image:latest \
+            -f ./sidecar/docker/Dockerfile \
+            .
+      - name: Push a docker image
+        run: docker push asia-northeast1-docker.pkg.dev/tech-lab-323207/tnamba-tutorial-sidecar/sidecar-image:latest
 
       - name: Deploy to Cloud Run
         run: |
