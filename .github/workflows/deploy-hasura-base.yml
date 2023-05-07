@@ -1,0 +1,73 @@
+name: Deploy to Cloud Run
+
+on:
+  workflow_call:
+    inputs:
+      project_id:
+        required: true
+        type: string
+      project_number:
+        required: true
+        type: number
+      service_account_email:
+        required: true
+        type: string
+      workload_identity_pool_id:
+        required: true
+        type: string
+      workload_identity_pool_provider_id:
+        required: true
+        type: string
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy to Cloud Run
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          project_id: ${{ inputs.project_id }}
+          service_account_email: ${{ inputs.service_account_email }}
+
+      - name: Authenticate to Google Cloud 
+        uses: google-github-actions/auth@v0
+        with:
+          workload_identity_provider: 'projects/${{ inputs.project_number }}/locations/global/workloadIdentityPools/${{inputs.workload_identity_pool_id}}/providers/${{inputs.workload_identity_pool_provider_id}}'
+          service_account: ${{ inputs.service_account_email }}
+
+      - name: Install gcloud beta
+        run: gcloud components install beta --quiet
+
+      - name: Configure docker to use the gcloud cli
+        run: gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet
+
+      - name: "Build & Push docker image"
+        run: |
+        docker pull hasura/graphql-engine:v2.15.2.cli-migrations-v3
+
+      - name: "Tag docker image"
+        run: |
+        docker tag hasura/graphql-engine:v2.15.2.cli-migrations-v3 \
+          ${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/tnamba-tutorial-hasura/hasura-image:latest
+
+      - name: "Pish docker image"
+        run: |
+        docker push \
+          ${{ inputs.region }}-docker.pkg.dev/${{ inputs.project_id }}/tnamba-tutorial-hasura/hasura-image:latest
+
+      # - name: Deploy to Cloud Run
+      #   run: |
+      #     gcloud run deploy tnamba-tutorial-sidecar \
+      #       --image asia-northeast1-docker.pkg.dev/${{ inputs.project_id }}/tnamba-tutorial-sidecar/sidecar-image:latest \
+      #       --region asia-northeast1 \
+      #       --project ${{ inputs.project_id }} \
+      #       --platform managed \
+      #       --quiet
