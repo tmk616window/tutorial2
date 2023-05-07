@@ -54,7 +54,7 @@ jobs:
             -f ./sidecar/docker/Dockerfile \
             .
       - name: Push a docker image
-        run: gcr.io/tech-lab-323207/pro-traning-b:latest
+        run: docker push gcr.io/tech-lab-323207/pro-traning-b:latest
 
       - name: Deploy to Cloud Run
         run: |
