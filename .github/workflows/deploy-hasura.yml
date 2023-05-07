@@ -12,6 +12,7 @@ jobs:
     with:
       project_id: tech-lab-323207
       project_number: 823642599271
+      region: asia-northeast1
       service_account_email: tnamba-tutorial-ga-sa@tech-lab-323207.iam.gserviceaccount.com
       workload_identity_pool_id: tnamba-tutorial-pool
       workload_identity_pool_provider_id: tnamba-tutorial-ga-pool-provider
